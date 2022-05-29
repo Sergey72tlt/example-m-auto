@@ -1,0 +1,39 @@
+<header class="header">
+  {% if user.is_authenticated %}
+        <p>Привет, <a href="{% url 'core:profile-detail' user.profile.id %}">{{user.username }}</a></p>
+
+    {% else %}
+
+  {% endif %}
+<ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'core:sign_up' %}">Зарегистрироваться</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'core:login' %}">Войти</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'core:logout' %}">Выйти</a>
+  </li>
+</ul>
+
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'posts:index' %}">M-Auto</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'posts:index' %}">Главная</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'posts:feed'%}">Лента друзей</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'posts:post-create'%}">Добавить пост</a>
+        </li>
+        {% endif %}
+    </div>
+  </div>
+</nav>
+</header>

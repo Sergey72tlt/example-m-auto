@@ -1,0 +1,36 @@
+{% extends 'posts/base.html' %}
+
+{% block title%}
+    Профиль - {{ profile.user.username }}
+{% endblock %}
+
+{% block page_content %}
+    {% if profile.avatar %}
+        <p><img src="{{ profile.avatar.url }}" style="width: 250px; height: 250px"></p>
+    {% endif %}
+    <h3>Обо мне:</h3>
+    <p>{{ profile.about }}</p>
+    <h3>Дата рождения:</h3>
+    <p>{{ profile.birth_date }}</p>
+    <div>
+        <div>
+            <p>Подписчиков: {{ profile.get_subscribers_count }}</p>
+            <div>
+
+            </div>
+            <p>Подписки: {{ profile.get_subscriptions_count }}</p>
+        </div>
+    </div>
+    {% if profile.user != user %}
+        <form action="{% url 'core:subscribe' profile.user.id %}" method="post">
+            {% csrf_token %}
+            {% if profile.user in user.profile.subscriptions.all %}
+                <button type="submit">❎ Отписаться</button>
+            {% else %}
+                <button type="submit">✅ Подписаться</button>
+            {% endif %}
+        </form>
+    {% else %}
+        <a href="{% url 'core:profile-update' profile.id %}">Изменить профиль</a>
+    {% endif %}
+{% endblock %}

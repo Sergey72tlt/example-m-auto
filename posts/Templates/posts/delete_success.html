@@ -1,0 +1,11 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}
+    Успешное завершение
+{% endblock %}
+
+{% block page_content %}
+    <h1>Объявление удалено</h1>
+    <a href="{% url 'posts:index' %}">Вернуться на главную</a>
+    <a href="{% url 'posts:post-create' %}">Создать новое объявление</a>
+{% endblock %}

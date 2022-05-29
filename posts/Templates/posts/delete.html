@@ -1,0 +1,19 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}
+Удаление объявления
+{% endblock %}
+
+{% block page_content %}
+
+    {% if post.author != user %}
+        <h1>Удалить объявление может только его автор</h1>
+    {% else %}
+        <h1>Вы действительно хотите удалить это объявление?</h1>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Удалить</button>
+        </form>
+        <a href="{% url 'posts:post-detail' post.id %}">Отмена</a>
+    {% endif %}
+{% endblock %}
