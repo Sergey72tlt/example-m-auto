@@ -17,11 +17,19 @@ class TestFeedView(TestCase):
 
         self.test_user1 = User.objects.create(username='test1', email='test@test.com', password='test')
         self.test_user2 = User.objects.create(username='test2', email='test1@test.com', password='test')
+        self.test_user2_post = Post.objects.create(author=self.test_user2, image=image)
 
-        post = Post.objects.create(author=self.test_user1, image=image)
+        # post = Post.objects.create(author=self.test_user1, image=image)
         return super().setUp()
 
     def test_feed_blank_content(self):
         self.client.login(username='test1', password='test')
         response = self.client.get(reverse('posts:index'))
         self.assertIn('posts', response.context)
+
+    def test_feed_content(self):
+        self.test_user1.profile.subscriptions.add(self.test_user2)
+        self.client.login(username='test1', password='test')
+        response = self.client.get(reverse('posts:feed'))
+        posts = response.context['posts']
+        self.assertEqual(posts.count(), posts)
