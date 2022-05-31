@@ -24,6 +24,11 @@ class Post(models.Model):
     def __str__(self):
         return f'posts {self.id}, author {self.author.username}'
 
+COMMENT_STATUSES = [
+    ('MD', 'Moderation'),
+    ('AR', 'Archive'),
+    ('OK', 'Publicated')
+]
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -31,6 +36,7 @@ class Comment(models.Model):
     text = models.CharField(max_length=50)
     date_pub = models.DateTimeField(auto_now_add=True)
     date_edit = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=2, choices=COMMENT_STATUSES, default=COMMENT_STATUSES[0][0])
 
     def __str__(self):
         return f'Author - {self.author.username}, publicated - {self.date_pub}, post - {self.post.description[:15]}...'
