@@ -27,6 +27,7 @@ def comment_set_moderation_status(modeladmin, request, queryset):
         comment.status = COMMENT_STATUSES[0][0]
         comment.save()
 
+
 def comment_set_archive_status(modeladmin, request, queryset):
     for comment in queryset:
         comment.status = COMMENT_STATUSES[1][0]
@@ -43,4 +44,4 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('author', 'date_pub', 'text', 'date_edit', 'status')
     list_filter = ('author', 'date_pub', 'status')
     search_fields = ('author__username', 'text')
-    actions = [comment_set_publicated_status]
+    actions = [comment_set_publicated_status, comment_set_moderation_status, comment_set_archive_status]
