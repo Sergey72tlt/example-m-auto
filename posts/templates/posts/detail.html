@@ -10,10 +10,10 @@
 <p>{{ post.date_pub|date:'H:i j. F. Y' }}</p>
 <img src="{{ post.image.url }}" style="width: 500px; height: 300px;">
 <p>{{ post.description }}</p>
-<p> favorite: {{ post.favorite_count }}</p>
+<p> Избранное: {{ post.favorite_count }}</p>
     <form method="posts" action="{% url 'posts:post-favorite' post.id %}">
         {% csrf_token %}
-        <button type="submit">♥</button>
+        <button type="submit">♥ Добавить в избранное</button>
     </form>
 {% if post.author == user %}
 <a href="{% url 'posts:post-edit' post.id %}">✎</a>

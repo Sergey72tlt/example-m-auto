@@ -17,9 +17,19 @@ class IndexView(ListView):
     LIMIT = 10
 
     def get_queryset(self):
-        queryset = self.model.objects.annotate(
-                                                favorite_nums=Count('favorite')
-                                                ).order_by('-favorite_nums')[:self.LIMIT]
+        queryset = self.model.objects.annotate(favorite_nums=Count('favorite')
+                                               ).order_by('-favorite_nums')[:self.LIMIT]
+        return queryset
+
+
+class FavoriteListView(ListView):
+    model = Post
+    template_name = 'posts/favorite.html'
+
+    # @method_decorator(login_required(login_url='/admin/'))
+    def get_queryset(self):
+        favorite_list = self.request.post.favorite_count.all()
+        queryset = Post.objects.filter(author__in=favorite_list)
         return queryset
 
 
@@ -60,7 +70,8 @@ class PostDetail(DetailView):
             comment.post = self.object
             comment.save()
             form = self.comment_form
-        return render(request, self.template_name, context={'post': self.object, 'comments': self.get_comments(),
+        return render(request, self.template_name, context={'post': self.object,
+                                                            'comments': self.get_comments(),
                                                             'comment_form': form})
 
     def get_comments(self):
@@ -136,9 +147,6 @@ class PostUpdate(UpdateView):
     def get_success_url(self):
         post_id = self.kwargs['post_id']
         return reverse('posts:post-detail', args=(post_id, ))
-
-
-
 
 
 @login_required(login_url='/admin/')
