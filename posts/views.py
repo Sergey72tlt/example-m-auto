@@ -22,14 +22,14 @@ class IndexView(ListView):
         return queryset
 
 
-class FavoriteListView(ListView):
-    model = Post
-    template_name = 'posts/favorite.html'
+class FavoriteListView(IndexView):
 
-    # @method_decorator(login_required(login_url='/admin/'))
+    @method_decorator(login_required(login_url='/admin/'))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
     def get_queryset(self):
-        favorite_list = self.request.post.favorite_count.all()
-        queryset = Post.objects.filter(author__in=favorite_list)
+        queryset = self.request.user.favorite_posts.all()
         return queryset
 
 

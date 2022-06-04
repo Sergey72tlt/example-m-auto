@@ -5,5 +5,5 @@
 {% endblock %}
 
 {% block page_content %}
-
+<a href="{% url 'posts:post-favorite' post.id %}" class="btn btn-primary">Перейти к объявлению</a>
 {% endif %}
